@@ -18,4 +18,8 @@ Kim et al. identified a list containing the top ten keywords that developers use
 
 # Getting Started
 
-1. 
+1. Checkout GitHubScraper:
+
+    * ``git clone https://github.com/kpt-haddock/GitHubScraper.git``
+
+2. 
