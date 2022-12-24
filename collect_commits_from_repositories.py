@@ -3,7 +3,8 @@ from dotenv import load_dotenv
 import time
 import os
 from tqdm import tqdm
-from read_nodes import read_nodes
+from read_write_nodes import read_nodes
+import pandas as pd
 
 load_dotenv()
 
@@ -37,8 +38,17 @@ keywords = [      # from https://www.microsoft.com/en-us/research/wp-content/upl
 repositories = [repository['nameWithOwner'] for repository in read_nodes()]
 
 for keyword in tqdm(keywords):
-    f = open('{}.csv'.format(keyword), 'a')
+    print('searching for commits with keyword: {}...'.format(keyword))
+    filename = 'csv/{}.csv'.format(keyword)
+    scraped_repositories = []
+    if os.path.exists(filename):
+        with open(filename, 'r') as f:
+            for line in f:
+                scraped_repositories.append(line.strip().split(',')[0])
+    f = open(filename, 'a')
     for repo in tqdm(repositories, total=len(repositories)):
+        if repo in scraped_repositories:
+            continue
         print('searching {} for commits...'.format(repo))
         f.write('{}'.format(repo))
         commits = search_commits(repo, keyword)
